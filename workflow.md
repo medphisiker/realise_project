@@ -11,6 +11,12 @@
 - release-ready scope определен;
 - project-local release binding прочитан из `project/releaseContext.md`.
 
+## Execution scope
+
+- Не учитывай место хранения workflow artifacts при определении execution scope.
+- Этот workflow выполняется для корневого проекта, который запускает release workflow.
+- Project-specific release shape, repository boundaries и release rules должны читаться из `project/` и workflow-instance artifacts в `operational_scope/realise_project/`.
+
 ## Workflow-instance exchange layer
 
 Этот workflow использует временный workflow-specific exchange layer внутри `Operational Documentation Layer`.
