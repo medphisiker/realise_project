@@ -2,8 +2,8 @@
 
 ## Release run
 
-- Release ID: `<release-id>`
-- Step result: `<passed|blocked>`
+- Release ID: `2026-04-15-openai-chatgpt-policy-editor-release`
+- Step result: passed
 
 ## Stage
 
