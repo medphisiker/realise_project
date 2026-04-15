@@ -17,6 +17,7 @@
 
 - Не учитывай место хранения workflow artifacts при определении execution scope.
 - Этот workflow выполняется для корневого проекта, который запускает release workflow.
+- Reusable workflow semantics живут в этом файле и в `STEP.md`/`SKILL.md` step packs.
 - Project-specific release shape, repository boundaries и release rules должны читаться из `project/` и workflow-instance artifacts в `operational_scope/realise_project/`.
 
 ## Workflow-instance exchange layer
@@ -43,12 +44,12 @@ Baseline путь:
 
 ## Базовая последовательность
 
-- Сначала подтвердить readiness gate, включая branch matrix и проверку, что preparation идет в допустимых preparation branches.
+- Сначала подтвердить readiness gate, включая branch matrix и preparation-stage branch policy.
 - Затем подготовить release Docker contour и зафиксировать новые release versions для touched units.
 - После этого очистить completed operational artifacts, уже поднятые в SoT.
 - Затем подготовить release notes для root проекта и changed nested release units.
-- После завершения preparation пройти hard publication gate и только затем выполнять финальный Docker/release contour.
-- В конце повторно проверить branch state и только затем materialize-ить git tags и GitHub releases для root repo и changed nested release units по версиям из `project/releaseVersionRegistry.json`.
+- После завершения preparation пройти hard publication gate и только затем выполнять финальный publication contour.
+- В конце повторно проверить publication-stage branch state и только затем materialize-ить git tags и GitHub releases для root repo и changed nested release units по версиям из `project/releaseVersionRegistry.json`.
 
 ## Vacancies and handoff model
 
@@ -97,13 +98,10 @@ Baseline путь:
 ## Важные invariants
 
 - Workflow не должен сам по себе публиковать release до manual verification пользователем.
-- Workflow должен проверять preparation-branch eligibility в начале release run и повторно валидировать release-branch eligibility перед publication.
-- Workflow не должен публиковать release из feature branch.
-- Workflow должен допускать release preparation в `feature-<feature-name>` branch и не должен требовать раннего merge до завершения preparation steps.
-- Если preparation идет прямо в intended release branch, workflow должен запросить explicit user confirmation.
-- Перед publication workflow должен направить changed release units в PR flow к intended release branch и только потом продолжать release publication.
-- Workflow для этого проекта по умолчанию работает как `whole-run atomic` и не должен продолжать release только для subset touched units без явного пересмотра release scope.
-- Release logic должна читать project-local release binding, а не хардкодить project shape.
+- Workflow должен различать preparation-stage branch policy и publication-stage branch policy.
+- Workflow не должен публиковать release artifacts из branch, который не проходит project-local publication policy.
+- Workflow должен допускать project-local preparation flow до hard publication gate.
+- Workflow должен читать branch policy, release units, documentation locations, atomicity и recovery rules из project-local context, а не хардкодить их в reusable layer.
 - `project/releaseVersionRegistry.json` является текущим mutable registry release versions/tags для root проекта и nested release units.
 - Cleanup не должен удалять неканонизированное знание.
 - Release notes и tags должны готовиться только для touched release units.

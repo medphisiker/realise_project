@@ -38,7 +38,7 @@
 - release notes для root проекта;
 - release notes для changed nested release units.
 - обновленный `release-run.md`;
-- handoff artifact для шага `05-tag-prep`.
+- handoff artifact для шага `05-github-release`.
 
 ## Минимальная проверка внутри шага
 
