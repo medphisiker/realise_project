@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "root_project": {
+    "git_tag": "v0.0.1"
+  },
+  "release_units": {
+    "services/backend": {
+      "git_tag": "v0.0.1",
+      "docker_image_tag": "v0.0.1"
+    }
+  }
+}

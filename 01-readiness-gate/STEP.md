@@ -2,7 +2,7 @@
 
 ## Назначение
 
-Подтвердить, что release можно начинать: taskset завершен, white spots закрыты, relevant knowledge уже перенесено в Engineering Documentation SoT, а touched release units прошли начальный branch/PR eligibility gate.
+Подтвердить, что release можно начинать: taskset завершен, white spots закрыты, relevant knowledge уже перенесено в Engineering Documentation SoT, а touched release units проходят начальный preparation-branch gate.
 
 ## Execution scope
 
@@ -28,7 +28,9 @@
 - проверить, что remaining operational artifacts не содержат незакрытых архитектурных unknowns.
 - определить touched release units и их intended release branches;
 - зафиксировать branch matrix для touched release units;
-- если любой touched release unit находится не на intended release branch, остановить workflow до PR/merge alignment и не передавать run дальше в `02-docker-cutover`.
+- проверить, что preparation идет в допустимой feature branch `feature-<feature-name>` или в другом явно разрешенном project-local preparation branch;
+- если preparation идет прямо в intended release branch, остановить workflow до explicit user confirmation;
+- если branch state не проходит preparation policy, остановить workflow и не передавать run дальше в `02-docker-cutover`.
 
 ## Что шаг не делает
 
@@ -53,12 +55,12 @@
 - relevant `docs/` already reflect implemented behavior;
 - touched release units и explicit exclusions clearly identified;
 - branch matrix для touched release units зафиксирован;
-- каждый touched release unit либо уже находится на intended release branch, либо workflow остановлен до PR/merge alignment;
+- каждый touched release unit либо находится в допустимом preparation branch, либо workflow остановлен до clarifying decision;
 - remaining operational artifacts не содержат blocking white spots для approved release scope.
 
 ## DoD
 
-- можно безопасно перейти к Docker cutover без architectural uncertainty и branch ambiguity.
+- можно безопасно перейти к Docker cutover без architectural uncertainty и branch ambiguity for preparation stage.
 - `release-run.md` отражает завершение шага.
 - подготовлен handoff artifact для следующего шага.
 

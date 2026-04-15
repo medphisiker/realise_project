@@ -7,7 +7,17 @@
 ## Что входит в pack
 
 - [`workflow.md`](./workflow.md) — semantic карта release workflow.
+- [`setup_instructions.md`](./setup_instructions.md) — как подключить workflow pack к своему проекту.
 - step packs с `STEP.md` и `SKILL.md` для отдельных release шагов.
+
+## Как выполнять workflow
+
+Этот раздел предназначен для агента или человека, который уже работает внутри проекта, где workflow pack подключен.
+
+1. Сначала прочитать project-local release binding в `project/releaseContext.md` и related files.
+2. Затем открыть [`workflow.md`](./workflow.md).
+3. После этого перейти в нужный `workflow-step` и выполнять его через соответствующий step pack.
+4. `setup_instructions.md` использовать только если workflow pack еще не интегрирован в проект.
 
 ## Предшествующий workflow context
 
@@ -23,11 +33,15 @@
 - release workflow стартует не от состояния "есть выполненные задачи", а от состояния "есть завершенный taskset и уже обновленный SoT";
 - для шагов, где важна continuity of understanding, vacancy должен закрывать preferably тот же самый Architect, который вел planning -> canonization -> implementation review cycle, а не просто любой новый агент с ролью Architect.
 
-## Как использовать
+## Как использовать в своем проекте
 
-1. Сначала прочитать project-local release binding в `project/releaseContext.md`.
-2. Затем открыть [`workflow.md`](./workflow.md).
-3. После этого выполнять нужный `workflow-step` через соответствующий step pack.
+Этот раздел предназначен для пользователя, который хочет перенести workflow pack в новый проект.
+
+1. Сначала прочитать [`setup_instructions.md`](./setup_instructions.md).
+2. Затем разложить templates в свой проект с сохранением путей.
+3. После этого заполнить project-local release binding в `project/releaseContext.md` и related files.
+4. Затем использовать examples из `resources/examples/` как reference shape.
+5. Когда интеграция завершена, выполнять workflow уже по разделу `Как выполнять workflow`.
 
 ## Что должно приходить из project-local context
 
@@ -86,7 +100,7 @@ Baseline assignment:
 - `02-docker-cutover` — Code-agent с explicit handoff;
 - `03-artifact-cleanup` — preferably тот же Architect;
 - `04-release-notes` — preferably тот же Architect;
-- `05-tag-prep` — Code-agent с explicit handoff.
+- `05-github-release` — Code-agent с explicit handoff.
 
 Code-agent на шагах `02` и `05` получает из `AGENTS.md` и `project/` только static project/release binding, но не получает автоматически:
 

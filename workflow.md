@@ -4,6 +4,8 @@
 
 Этот workflow описывает последовательность шагов release после завершения taskset, канонизации знаний в SoT и готовности проекта к упаковке и публикации.
 
+Для подключения workflow pack в конкретный проект используй [`setup_instructions.md`](./setup_instructions.md).
+
 ## Preconditions
 
 - relevant taskset выполнен;
@@ -41,11 +43,11 @@ Baseline путь:
 
 ## Базовая последовательность
 
-- Сначала подтвердить readiness gate, включая branch matrix и branch/PR eligibility для всех touched release units.
+- Сначала подтвердить readiness gate, включая branch matrix и проверку, что preparation идет в допустимых preparation branches.
 - Затем подготовить release Docker contour и зафиксировать новые release versions для touched units.
 - После этого очистить completed operational artifacts, уже поднятые в SoT.
 - Затем подготовить release notes для root проекта и changed nested release units.
-- После успешного merge/alignment на intended release branches пройти Docker/release contour.
+- После завершения preparation пройти hard publication gate и только затем выполнять финальный Docker/release contour.
 - В конце повторно проверить branch state и только затем materialize-ить git tags и GitHub releases для root repo и changed nested release units по версиям из `project/releaseVersionRegistry.json`.
 
 ## Vacancies and handoff model
@@ -95,9 +97,11 @@ Baseline путь:
 ## Важные invariants
 
 - Workflow не должен сам по себе публиковать release до manual verification пользователем.
-- Workflow должен проверять branch/PR eligibility в начале release run и повторно валидировать ее перед publication.
+- Workflow должен проверять preparation-branch eligibility в начале release run и повторно валидировать release-branch eligibility перед publication.
 - Workflow не должен публиковать release из feature branch.
-- Если changed release unit находится на feature branch, workflow должен сначала направить его в PR flow к intended release branch и только потом продолжать release publication.
+- Workflow должен допускать release preparation в `feature-<feature-name>` branch и не должен требовать раннего merge до завершения preparation steps.
+- Если preparation идет прямо в intended release branch, workflow должен запросить explicit user confirmation.
+- Перед publication workflow должен направить changed release units в PR flow к intended release branch и только потом продолжать release publication.
 - Workflow для этого проекта по умолчанию работает как `whole-run atomic` и не должен продолжать release только для subset touched units без явного пересмотра release scope.
 - Release logic должна читать project-local release binding, а не хардкодить project shape.
 - `project/releaseVersionRegistry.json` является текущим mutable registry release versions/tags для root проекта и nested release units.
