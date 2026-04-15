@@ -2,7 +2,7 @@
 
 ## Назначение
 
-Подтвердить, что release можно начинать: taskset завершен, white spots закрыты, relevant knowledge уже перенесено в Engineering Documentation SoT, а touched release units проходят начальный preparation-branch gate.
+Подтвердить, что release можно начинать: taskset завершен, white spots закрыты, relevant knowledge уже перенесено в Engineering Documentation SoT, а touched release units проходят [`release-preparation gate`](../terms.md).
 
 ## Execution scope
 
@@ -28,7 +28,7 @@
 - проверить, что remaining operational artifacts не содержат незакрытых архитектурных unknowns.
 - определить touched release units и их intended release branches;
 - зафиксировать branch matrix для touched release units;
-- проверить, что preparation идет в допустимой feature branch `feature-<feature-name>` или в другом явно разрешенном project-local preparation branch;
+- проверить, что `release-preparation stage` идет в допустимой feature branch `feature-<feature-name>` или в другом явно разрешенном project-local preparation branch;
 - если preparation идет прямо в intended release branch, остановить workflow до explicit user confirmation;
 - если branch state не проходит preparation policy, остановить workflow и не передавать run дальше в `02-docker-cutover`.
 

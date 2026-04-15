@@ -2,7 +2,7 @@
 
 ## Назначение
 
-Подготовить release Docker contour проекта во время preparation stage и синхронизировать production compose с актуальной логикой development compose без финальной publication.
+Подготовить release Docker contour проекта во время `release-preparation stage` и синхронизировать production compose с актуальной логикой development compose без финальной publication.
 
 ## Execution scope
 
@@ -23,16 +23,16 @@
 
 ## Действие
 
-- определить preparation-stage Docker contour для touched release units;
+- определить Docker contour для `release-preparation stage` у touched release units;
 - определить новые release versions/tags для touched release units и обновить `project/releaseVersionRegistry.json`;
-- локально собрать preparation images с approved release tags для touched release units, чтобы проверить Docker contour до hard publication gate;
+- локально собрать preparation images с approved release tags для touched release units, чтобы проверить Docker contour до [`release-publication gate`](../terms.md);
 - сравнить `docker-compose-dev.yml` и `docker-compose.yml`;
 - перенести в `docker-compose.yml` новые image refs и release-relevant runtime logic, которая уже materialized в dev contour;
 - обновлять только touched release units; untouched release units не менять;
 - сравнивать не только image refs, но и release-relevant runtime fields: environment, command/entrypoint, healthcheck, depends_on, ports, restart policy, volumes и другие поля, влияющие на release contour;
 - dev-only mechanics вроде bind mounts, live-reload и локального build flow не переносить в release contour автоматически;
 - подготовить release contour для manual verification пользователем;
-- зафиксировать, что финальная publication Docker images должна выполняться только после hard publication gate из intended release branch.
+- зафиксировать, что финальная publication Docker images должна выполняться только после [`release-publication gate`](../terms.md) из intended release branch.
 
 ## Что шаг не делает
 
@@ -62,7 +62,7 @@
 - `docker-compose.yml` синхронизирован с актуальной release logic и готов к ручной проверке.
 - touched preparation images локально собраны с approved release tags.
 - `project/releaseVersionRegistry.json` обновлен для touched release units.
-- зафиксировано, что финальный publish contour будет materialized только после hard publication gate.
+- зафиксировано, что финальный publish contour будет materialized только после `release-publication gate`.
 - `release-run.md` отражает завершение шага.
 - подготовлен handoff artifact для следующего шага.
 

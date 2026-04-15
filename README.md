@@ -7,6 +7,7 @@
 ## Что входит в pack
 
 - [`workflow.md`](./workflow.md) — semantic карта release workflow.
+- [`terms.md`](./terms.md) — workflow-local terms для gates и stages.
 - [`setup_instructions.md`](./setup_instructions.md) — как подключить workflow pack к своему проекту.
 - step packs с `STEP.md` и `SKILL.md` для отдельных release шагов.
 
@@ -32,6 +33,7 @@
 ## Куда идти дальше
 
 - execution semantics workflow и step order — в [`workflow.md`](./workflow.md)
+- workflow-local terminology — в [`terms.md`](./terms.md)
 - project integration and required files — в [`setup_instructions.md`](./setup_instructions.md)
 - concrete step behavior — в соответствующие `STEP.md` и `SKILL.md`
 - reusable templates и finished examples — в `resources/`
@@ -40,5 +42,7 @@
 
 - `workflow`
 - `workflow-step`
+- `release-preparation gate`
+- `release-publication gate`
 - `step-vacancy`
 - `Release Documentation Layer`

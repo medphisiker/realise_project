@@ -5,6 +5,7 @@
 Этот workflow описывает последовательность шагов release после завершения taskset, канонизации знаний в SoT и готовности проекта к упаковке и публикации.
 
 Для подключения workflow pack в конкретный проект используй [`setup_instructions.md`](./setup_instructions.md).
+Workflow-local terms смотри в [`terms.md`](./terms.md).
 
 ## Preconditions
 
@@ -44,11 +45,11 @@ Baseline путь:
 
 ## Базовая последовательность
 
-- Сначала подтвердить readiness gate, включая branch matrix и preparation-stage branch policy.
+- Сначала пройти [`release-preparation gate`](./terms.md), включая branch matrix и preparation-stage branch policy.
 - Затем подготовить release Docker contour и зафиксировать новые release versions для touched units.
 - После этого очистить completed operational artifacts, уже поднятые в SoT.
 - Затем подготовить release notes для root проекта и changed nested release units.
-- После завершения preparation пройти hard publication gate и только затем выполнять финальный publication contour.
+- После завершения `release-preparation stage` пройти [`release-publication gate`](./terms.md) и только затем выполнять финальный publication contour.
 - В конце повторно проверить publication-stage branch state и только затем materialize-ить git tags и GitHub releases для root repo и changed nested release units по версиям из `project/releaseVersionRegistry.json`.
 
 ## Vacancies and handoff model
@@ -98,9 +99,10 @@ Baseline путь:
 ## Важные invariants
 
 - Workflow не должен сам по себе публиковать release до manual verification пользователем.
+- Workflow должен различать `release-preparation gate` и `release-publication gate`.
 - Workflow должен различать preparation-stage branch policy и publication-stage branch policy.
 - Workflow не должен публиковать release artifacts из branch, который не проходит project-local publication policy.
-- Workflow должен допускать project-local preparation flow до hard publication gate.
+- Workflow должен допускать project-local preparation flow до `release-publication gate`.
 - Workflow должен читать branch policy, release units, documentation locations, atomicity и recovery rules из project-local context, а не хардкодить их в reusable layer.
 - `project/releaseVersionRegistry.json` является текущим mutable registry release versions/tags для root проекта и nested release units.
 - Cleanup не должен удалять неканонизированное знание.

@@ -4,7 +4,7 @@
 
 Создать git tags и GitHub releases для root проекта и changed nested release units по уже зафиксированным версиям из `project/releaseVersionRegistry.json`.
 
-Начальный branch/PR gate должен быть уже пройден на `01-readiness-gate`. На этом шаге branch state валидируется повторно перед финальной publication, а release разрешен только из merged HEAD intended release branch каждого release unit.
+[`release-preparation gate`](../terms.md) должен быть уже пройден на `01-readiness-gate`. На этом шаге branch state валидируется повторно как часть [`release-publication gate`](../terms.md), а release разрешен только из merged HEAD intended release branch каждого release unit.
 
 ## Execution scope
 
@@ -30,7 +30,7 @@
 - повторно проверить current branch для root repo и changed nested release units;
 - сопоставить его с intended release branch из project-local policy;
 - проверить, что target commit для tag/release является merged HEAD intended release branch;
-- если branch state больше не соответствует readiness handoff, остановить release publication и вернуть workflow к PR/merge alignment вместо публикации из feature/non-release branch;
+- если branch state больше не соответствует readiness handoff, остановить `release-publication gate` и вернуть workflow к PR/merge alignment вместо публикации из feature/non-release branch;
 - прочитать fixed release versions/tags из `project/releaseVersionRegistry.json`;
 - создать tag set для root repo и changed nested repos;
 - подготовить и/или создать GitHub releases по готовым release notes.
@@ -66,7 +66,7 @@
 
 - для каждого changed release unit зафиксирован current branch и verified release branch decision.
 - для каждого changed release unit зафиксирован final tag target SHA.
-- для каждого changed release unit создан git tag и подготовлен/создан GitHub release по зафиксированным версиям только после branch/PR gate.
+- для каждого changed release unit создан git tag и подготовлен/создан GitHub release по зафиксированным версиям только после `release-publication gate`.
 - `release-run.md` отражает завершение шага.
 - подготовлен финальный handoff artifact workflow-run.
 
