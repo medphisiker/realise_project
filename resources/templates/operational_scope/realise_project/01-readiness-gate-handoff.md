@@ -5,6 +5,10 @@
 - Release ID: `<release-id>`
 - Step result: `<passed|blocked>`
 
+## `release-preparation gate`
+
+- Gate result: `<passed|blocked>`
+
 ## Touched release units
 
 - `./`
@@ -18,3 +22,7 @@
 ## Decision
 
 - `<readiness-and-branch-eligibility-decision>`
+
+## Next stage
+
+- Workflow may proceed to `release-preparation stage` only if this gate is passed.

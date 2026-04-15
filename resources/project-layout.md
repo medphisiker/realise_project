@@ -13,6 +13,9 @@ project/
   releaseVersionRegistry.json       # required
   dockerReleaseContext.md           # recommended if Docker publish exists
 
+workflow-pack/
+  terms.md                          # workflow-local terms, if the pack defines them
+
 docs/
   releases/                         # default root release notes location
 
@@ -30,6 +33,7 @@ operational_scope/
 ## Notes
 
 - `project/` хранит project-local release binding.
+- `terms.md` внутри workflow-pack хранит workflow-local terminology вроде `release-preparation gate` и `release-publication gate`, если pack использует такие термины.
 - `docs/` хранит SoT и release notes, но не workflow-instance handoffs.
 - `operational_scope/realise_project/` хранит только временные artifacts конкретного release run.
 - Templates в `resources/templates/` уже разложены по этой структуре.

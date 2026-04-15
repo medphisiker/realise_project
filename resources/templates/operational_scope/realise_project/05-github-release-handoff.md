@@ -5,6 +5,12 @@
 - Release ID: `<release-id>`
 - Step result: `<passed|blocked>`
 
+## `release-publication gate`
+
+- Gate result: `<passed|blocked>`
+- PR URL: `<url-or-not-required>`
+- Merge commit SHA: `<sha-or-not-required>`
+
 ## Branch and publication evidence
 
 - `./` -> current branch: `<release-branch>`, tag target SHA: `<sha>`, release URL: `<url>`

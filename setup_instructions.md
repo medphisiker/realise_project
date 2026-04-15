@@ -12,6 +12,8 @@
 4. заполняет project-local files под свою release policy;
 5. после этого workflow pack готов к первому release run.
 
+Workflow-local gate/stage terminology смотри в [`terms.md`](./terms.md).
+
 ## Что workflow ожидает от проекта
 
 Workflow pack самодостаточен как sequence of steps, но для работы он ожидает project-local binding в стандартных местах.
@@ -51,6 +53,8 @@ Templates уже разложены по целевой структуре ка�
 - release units;
 - release branch policy;
 - preparation branch policy;
+- `release-preparation gate` policy inputs;
+- `release-publication gate` policy inputs;
 - publish flow;
 - atomicity policy;
 - mistaken release recovery policy;
@@ -80,6 +84,11 @@ Workflow различает два branch classes:
 - preparation branch — ветка, в которой выполняется pre-release preparation;
 - release branch — ветка, из merged HEAD которой разрешена финальная publication.
 
+В терминах workflow-local terminology это означает:
+
+- `release-preparation gate` проверяет readiness и допустимость preparation branch;
+- `release-publication gate` проверяет merge/publication eligibility перед финальными release artifacts.
+
 Recommended baseline:
 
 - preparation branch pattern: `feature-<feature-name>`
@@ -96,6 +105,7 @@ Recommended baseline:
 - [`resources/project-layout.md`](./resources/project-layout.md) — краткая карта ожидаемой структуры проекта.
 - `resources/templates/` — минимальные заготовки файлов, уже разложенные по target paths.
 - `resources/examples/` — реальные заполненные примеры из проекта `llm_agent_platform`.
+- `terms.md` — workflow-local terms для gates и stages.
 
 ## Minimal integration checklist
 
