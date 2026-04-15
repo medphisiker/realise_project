@@ -17,12 +17,14 @@
 - `docker-compose.yml`;
 - project-local release binding.
 - `project/dockerReleaseContext.md`;
+- `project/releaseVersionRegistry.json`;
 - workflow-instance handoff от `01-readiness-gate`;
 - текущий `release-run.md`.
 
 ## Действие
 
 - собрать новые prod-ready образы;
+- определить новые release versions/tags для touched release units и обновить `project/releaseVersionRegistry.json`;
 - собрать их локально с approved release tags для touched release units;
 - сравнить `docker-compose-dev.yml` и `docker-compose.yml`;
 - перенести в `docker-compose.yml` новые image refs и release-relevant runtime logic, которая уже materialized в dev contour;
@@ -36,17 +38,20 @@
 - не публикует Docker images до manual verification пользователем;
 - не переписывает `docker-compose-dev.yml`, если не возникло реальной необходимости изменить development contour по смыслу;
 - не меняет release units вне approved release scope.
+- не придумывает image repository naming вне `project/dockerReleaseContext.md`.
 
 ## Выходы
 
 - обновленный release compose contour;
 - набор образов, готовых к manual verification и последующей публикации.
+- обновленный `project/releaseVersionRegistry.json`;
 - обновленный `release-run.md`;
 - handoff artifact для следующего workflow step.
 
 ## Минимальная проверка внутри шага
 
 - локальная сборка touched release images должна завершиться успешно;
+- `project/releaseVersionRegistry.json` должен отражать новый agreed release version/tag для touched release units;
 - release compose contour должен проходить структурную проверку через compose config/render;
 - в handoff artifacts не нужно копировать полный вывод команд, если в нем materialize secrets или env values.
 
@@ -54,6 +59,7 @@
 
 - `docker-compose.yml` синхронизирован с актуальной release logic и готов к ручной проверке.
 - touched release images локально собраны с approved release tags.
+- `project/releaseVersionRegistry.json` обновлен для touched release units.
 - `release-run.md` отражает завершение шага.
 - подготовлен handoff artifact для следующего шага.
 
