@@ -2,7 +2,7 @@
 
 ## Назначение
 
-Подтвердить, что release можно начинать: taskset завершен, white spots закрыты, а relevant knowledge уже перенесено в Engineering Documentation SoT.
+Подтвердить, что release можно начинать: taskset завершен, white spots закрыты, relevant knowledge уже перенесено в Engineering Documentation SoT, а touched release units прошли начальный branch/PR eligibility gate.
 
 ## Execution scope
 
@@ -16,6 +16,7 @@
 - completed taskset;
 - project-local SoT;
 - operational artifacts текущего изменения.
+- current git branches для root repo и candidate nested release units;
 - `project/releaseContext.md`;
 - `project/gitContext.md`;
 - текущий `release-run.md`, если он уже materialized для workflow-run.
@@ -25,6 +26,9 @@
 - проверить, что release scope завершен;
 - проверить, что `docs/` уже отражает реализованное состояние;
 - проверить, что remaining operational artifacts не содержат незакрытых архитектурных unknowns.
+- определить touched release units и их intended release branches;
+- зафиксировать branch matrix для touched release units;
+- если любой touched release unit находится не на intended release branch, остановить workflow до PR/merge alignment и не передавать run дальше в `02-docker-cutover`.
 
 ## Что шаг не делает
 
@@ -38,6 +42,7 @@
 
 - подтвержденный readiness state;
 - список touched release units;
+- branch matrix и branch/PR eligibility decision;
 - список canonized artifacts, на которые будет опираться release.
 - обновленный `release-run.md`;
 - handoff artifact для шага `02-docker-cutover`.
@@ -47,11 +52,13 @@
 - relevant taskset completed для approved release scope;
 - relevant `docs/` already reflect implemented behavior;
 - touched release units и explicit exclusions clearly identified;
+- branch matrix для touched release units зафиксирован;
+- каждый touched release unit либо уже находится на intended release branch, либо workflow остановлен до PR/merge alignment;
 - remaining operational artifacts не содержат blocking white spots для approved release scope.
 
 ## DoD
 
-- можно безопасно перейти к Docker cutover без architectural uncertainty.
+- можно безопасно перейти к Docker cutover без architectural uncertainty и branch ambiguity.
 - `release-run.md` отражает завершение шага.
 - подготовлен handoff artifact для следующего шага.
 
