@@ -101,17 +101,18 @@ Release publish flow для этого проекта:
 2. шаг `02-docker-cutover` определяет новые release versions для touched release units, обновляет `project/releaseVersionRegistry.json` и готовит preparation-stage Docker contour во время feature-branch preparation;
 3. шаг `03-artifact-cleanup` очищает completed operational artifacts, уже поднятые в SoT;
 4. шаг `04-release-notes` готовит release notes для root проекта и touched nested release units;
-5. после завершения preparation workflow проходит hard publication gate: touched release units должны быть merged в intended release branches;
-6. только после merge в intended release branches финальный Docker contour повторно materialize-ится и локально проверяется как publication-stage build с version tags из `project/releaseVersionRegistry.json`;
+5. шаг `05-release-publication-gate` materialize-ит explicit publication eligibility decision: touched release units должны быть merged в intended release branches;
+6. только после passed `release-publication gate` финальный Docker contour повторно materialize-ится и локально проверяется как publication-stage build с version tags из `project/releaseVersionRegistry.json`;
 7. обновляется `docker-compose.yml` и при необходимости `docker-compose-dev.yml` по смыслу;
 8. пользователь вручную запускает локальную проверку release contour через `docker-compose.yml`;
 9. только после успешной ручной проверки публикуются новые Docker images в registry;
-10. шаг `05-github-release` повторно валидирует branch state и использует уже зафиксированные версии из `project/releaseVersionRegistry.json` для git tags и GitHub releases.
+10. шаг `06-github-release` создает git tags и GitHub releases;
+11. шаг `07-mistaken-release-recovery` используется только если после publication обнаружен mistaken release.
 
 ## PR/merge evidence
 
 - Если release run требует branch integration, в workflow artifacts должны быть зафиксированы: `repo -> current branch`, `repo -> intended release branch`, `repo -> PR URL`, `repo -> merge commit SHA`, `repo -> final release commit SHA`.
-- Step `05-github-release` не должен создавать tag/release без повторной проверки, что target commit является merged HEAD intended release branch.
+- Step `05-release-publication-gate` должен фиксировать publication decision до `06-github-release`.
 
 ## Mistaken release recovery
 

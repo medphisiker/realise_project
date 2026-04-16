@@ -1,4 +1,4 @@
-# Handoff: `05-github-release`
+# Handoff: `06-github-release`
 
 ## Release run
 
@@ -7,7 +7,7 @@
 
 ## `release-publication gate`
 
-- Gate result: `<passed|blocked>`
+- Gate result: `<passed>`
 - PR URL: `<url-or-not-required>`
 - Merge commit SHA: `<sha-or-not-required>`
 

@@ -35,13 +35,67 @@ Baseline путь:
 
 В этом слое хранятся только instance-specific handoff artifacts между шагами workflow. После завершения workflow они могут быть удалены.
 
-## Карта шагов
+## Graph overview
+
+```mermaid
+flowchart TD
+    S([Workflow started]) --> A[01-readiness-gate\nrelease-preparation gate]
+    A -->|passed| B[02-docker-cutover]
+    A -->|blocked| A1[Clarify preparation branch policy]
+    B --> C[03-artifact-cleanup]
+    C --> D[04-release-notes]
+    D --> E[05-release-publication-gate\nrelease-publication gate]
+    E -->|passed| F[06-github-release]
+    E -->|PR or merge alignment required| E1[PR/merge alignment in configured release branch]
+    E1 --> E
+    F --> G([Workflow completed])
+    F -->|mistaken release detected| R[07-mistaken-release-recovery]
+    R --> E1
+```
+
+## Таблица вершин
+
+| Vertex | Type | Meaning |
+| --- | --- | --- |
+| `Workflow started` | lifecycle marker | Вход в workflow run |
+| `01-readiness-gate` | workflow-step | Проверка readiness и `release-preparation gate` |
+| `02-docker-cutover` | workflow-step | Preparation-stage Docker/release contour |
+| `03-artifact-cleanup` | workflow-step | Cleanup completed operational artifacts |
+| `04-release-notes` | workflow-step | Preparation release notes |
+| `05-release-publication-gate` | workflow-step | Explicit publication eligibility decision |
+| `06-github-release` | workflow-step | Final git/GitHub release publication |
+| `07-mistaken-release-recovery` | workflow-step | Exception/remediation path after mistaken release |
+| `Workflow completed` | lifecycle marker | Нормальное завершение happy path |
+
+## Таблица переходов
+
+| From | To | Condition |
+| --- | --- | --- |
+| `Workflow started` | `01-readiness-gate` | workflow run started |
+| `01-readiness-gate` | `02-docker-cutover` | `release-preparation gate` passed |
+| `01-readiness-gate` | `Clarify preparation branch policy` | preparation policy blocked |
+| `02-docker-cutover` | `03-artifact-cleanup` | step completed |
+| `03-artifact-cleanup` | `04-release-notes` | step completed |
+| `04-release-notes` | `05-release-publication-gate` | release-preparation stage completed |
+| `05-release-publication-gate` | `06-github-release` | `release-publication gate` passed |
+| `05-release-publication-gate` | `PR/merge alignment in configured release branch` | publication policy not yet satisfied |
+| `PR/merge alignment in configured release branch` | `05-release-publication-gate` | corrective alignment completed |
+| `06-github-release` | `Workflow completed` | publication succeeded |
+| `06-github-release` | `07-mistaken-release-recovery` | mistaken release detected |
+| `07-mistaken-release-recovery` | `PR/merge alignment in configured release branch` | remediation requires corrective alignment |
+
+## Happy path steps
 
 1. [Readiness Gate](./01-readiness-gate/STEP.md)
 2. [Docker Cutover](./02-docker-cutover/STEP.md)
 3. [Artifact Cleanup](./03-artifact-cleanup/STEP.md)
 4. [Release Notes](./04-release-notes/STEP.md)
-5. [GitHub Release](./05-github-release/STEP.md)
+5. [Release Publication Gate](./05-release-publication-gate/STEP.md)
+6. [GitHub Release](./06-github-release/STEP.md)
+
+## Exception/remediation step
+
+7. [Mistaken Release Recovery](./07-mistaken-release-recovery/STEP.md)
 
 ## Базовая последовательность
 
@@ -49,8 +103,8 @@ Baseline путь:
 - Затем подготовить release Docker contour и зафиксировать новые release versions для touched units.
 - После этого очистить completed operational artifacts, уже поднятые в SoT.
 - Затем подготовить release notes для root проекта и changed nested release units.
-- После завершения `release-preparation stage` пройти [`release-publication gate`](./terms.md) и только затем выполнять финальный publication contour.
-- В конце повторно проверить publication-stage branch state и только затем materialize-ить git tags и GitHub releases для root repo и changed nested release units по версиям из `project/releaseVersionRegistry.json`.
+- После завершения `release-preparation stage` пройти [`release-publication gate`](./terms.md) как explicit workflow-step и только затем выполнять финальный publication contour.
+- В конце materialize-ить git tags и GitHub releases для root repo и changed nested release units по версиям из `project/releaseVersionRegistry.json`.
 
 ## Vacancies and handoff model
 
@@ -60,7 +114,9 @@ Baseline путь:
 | `02-docker-cutover` | Code-agent | `AGENTS.md`, `project/`, `docs/` | [`01-readiness-gate-handoff.md`](../../../../operational_scope/realise_project/<release-id>/01-readiness-gate-handoff.md) + current [`release-run.md`](../../../../operational_scope/realise_project/<release-id>/release-run.md); must include approved release scope, touched release units, exclusions, previous version baseline, proposed next release version/tag, compose sync intent |
 | `03-artifact-cleanup` | preferably the same Architect | `AGENTS.md`, `project/`, `docs/`, completed task reports | [`01-readiness-gate-handoff.md`](../../../../operational_scope/realise_project/<release-id>/01-readiness-gate-handoff.md) + [`02-docker-cutover-handoff.md`](../../../../operational_scope/realise_project/<release-id>/02-docker-cutover-handoff.md) + current [`release-run.md`](../../../../operational_scope/realise_project/<release-id>/release-run.md); must include approved scope, deleted/unchanged release units, SoT baseline confirmation |
 | `04-release-notes` | preferably the same Architect | `AGENTS.md`, `project/`, `docs/`, completed task reports | [`03-artifact-cleanup-handoff.md`](../../../../operational_scope/realise_project/<release-id>/03-artifact-cleanup-handoff.md) + current [`release-run.md`](../../../../operational_scope/realise_project/<release-id>/release-run.md); must include final retained/deleted artifact picture and approved release scope |
-| `05-github-release` | Code-agent | `AGENTS.md`, `project/`, `docs/` | [`04-release-notes-handoff.md`](../../../../operational_scope/realise_project/<release-id>/04-release-notes-handoff.md) + current [`release-run.md`](../../../../operational_scope/realise_project/<release-id>/release-run.md) + `project/releaseVersionRegistry.json`; must include changed release units, release-note paths, fixed release versions/tags, explicit exclusions |
+| `05-release-publication-gate` | Code-agent | `AGENTS.md`, `project/`, `docs/` | [`04-release-notes-handoff.md`](../../../../operational_scope/realise_project/<release-id>/04-release-notes-handoff.md) + current [`release-run.md`](../../../../operational_scope/realise_project/<release-id>/release-run.md); must include changed release units, branch matrix, publication-policy inputs, PR/merge evidence |
+| `06-github-release` | Code-agent | `AGENTS.md`, `project/`, `docs/` | [`05-release-publication-gate-handoff.md`](../../../../operational_scope/realise_project/<release-id>/05-release-publication-gate-handoff.md) + current [`release-run.md`](../../../../operational_scope/realise_project/<release-id>/release-run.md) + `project/releaseVersionRegistry.json`; must include changed release units, release-note paths, fixed release versions/tags, explicit exclusions |
+| `07-mistaken-release-recovery` | Code-agent | `AGENTS.md`, `project/`, `docs/` | [`06-github-release-handoff.md`](../../../../operational_scope/realise_project/<release-id>/06-github-release-handoff.md) + `mistaken-release-recovery.md` + current [`release-run.md`](../../../../operational_scope/realise_project/<release-id>/release-run.md); must include invalid publication state and remediation decision |
 
 ### Почему шаги `01`, `03`, `04` prefer the same Architect
 
@@ -76,7 +132,7 @@ Baseline путь:
 
 ### Что получает Code-agent и чего ему не хватает
 
-На шагах `02` и `05` Code-agent получает из `AGENTS.md` и `project/` static project context:
+На шагах `02`, `05`, `06`, `07` Code-agent получает из `AGENTS.md` и `project/` static project context:
 
 - repo boundaries;
 - release units;
@@ -94,7 +150,7 @@ Baseline путь:
 - mapping release notes к changed release units;
 - result of version bump decision for touched units before GitHub release step.
 
-Поэтому для шагов `02` и `05` обязателен explicit handoff через workflow-specific exchange layer.
+Поэтому для шагов `02`, `05`, `06`, `07` обязателен explicit handoff через workflow-specific exchange layer.
 
 ## Важные invariants
 

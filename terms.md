@@ -48,3 +48,5 @@ Gate перед входом в `release-publication stage`.
 - publication может безопасно идти из intended release branch.
 
 Этот gate строже `release-preparation gate`, потому что после него workflow переходит к финальным release artifacts.
+
+В `realise_project` этот gate materialize-ится как отдельный workflow-step `05-release-publication-gate`.

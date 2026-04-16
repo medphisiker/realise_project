@@ -42,8 +42,9 @@
 1. `01-readiness-gate` passes `release-preparation gate`, fixes touched release units and branch matrix.
 2. `02-docker-cutover` prepares Docker contour and updates `project/releaseVersionRegistry.json` during `release-preparation stage`.
 3. `03-artifact-cleanup` and `04-release-notes` complete preparation artifacts.
-4. Before publication, workflow must pass `release-publication gate`: touched release units must be merged into their configured release branches.
-5. Final Docker/image publication, git tags and GitHub releases are allowed only from merged HEAD configured release branch.
+4. `05-release-publication-gate` checks publication eligibility: touched release units must be merged into their configured release branches.
+5. `06-github-release` creates final git/GitHub release artifacts only after `release-publication gate` is passed.
+6. `07-mistaken-release-recovery` is used only if mistaken release remediation is required after publication.
 
 ## Atomicity
 

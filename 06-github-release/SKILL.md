@@ -1,7 +1,7 @@
 ---
 name: github-release
-description: Создает git tags и GitHub releases для root проекта и changed nested release units по project-local release version registry и release notes только после branch/PR gate.
-version: 1.2.0
+description: Создает git tags и GitHub releases для root проекта и changed nested release units по project-local release version registry и release notes после explicit publication gate.
+version: 1.0.0
 ---
 
 # Навык: GitHub Release
@@ -14,10 +14,10 @@ version: 1.2.0
 
 1. Прочитай `project/releaseContext.md`, `project/gitContext.md` и `project/releaseVersionRegistry.json`.
 2. Определи changed release units.
-3. Используй branch/PR eligibility result из `01-readiness-gate` как baseline для release run.
+3. Прочитай result `release-publication gate` из workflow handoff.
 4. Для root проекта и каждого changed nested release unit повторно проверь current branch и intended release branch.
-5. Если changed repo находится на feature/non-release branch или уже не совпадает с readiness handoff, не публикуй release; верни workflow в PR/merge alignment до intended release branch.
-6. Только после merge/readiness на intended release branch и проверки merged HEAD прочитай фиксированный tag/version из registry.
+5. Если publication gate не passed или branch state не соответствует intended release branch, не публикуй release.
+6. Только после проверки merged HEAD intended release branch прочитай фиксированный tag/version из registry.
 7. Свяжи каждый release unit с соответствующим release note.
 8. Создай git tags и подготовь/создай GitHub releases по готовым release notes.
 

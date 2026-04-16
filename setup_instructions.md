@@ -106,6 +106,8 @@ Recommended baseline:
 - `resources/templates/` — минимальные заготовки файлов, уже разложенные по target paths.
 - `resources/examples/` — реальные заполненные примеры из проекта `llm_agent_platform`.
 - `terms.md` — workflow-local terms для gates и stages.
+- `resources/templates/operational_scope/realise_project/mistaken-release-recovery.md` — шаблон remediation artifact для mistaken release.
+- `resources/templates/operational_scope/realise_project/05-release-publication-gate-handoff.md` — handoff для отдельного publication gate step.
 
 ## Minimal integration checklist
 

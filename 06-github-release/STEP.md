@@ -2,9 +2,7 @@
 
 ## Назначение
 
-Создать git tags и GitHub releases для root проекта и changed nested release units по уже зафиксированным версиям из `project/releaseVersionRegistry.json`.
-
-[`release-preparation gate`](../terms.md) должен быть уже пройден на `01-readiness-gate`. На этом шаге branch state валидируется повторно как часть [`release-publication gate`](../terms.md), а release разрешен только из merged HEAD intended release branch каждого release unit.
+Создать git tags и GitHub releases для root проекта и changed nested release units по уже зафиксированным версиям из `project/releaseVersionRegistry.json` после успешного `release-publication gate`.
 
 ## Execution scope
 
@@ -16,21 +14,19 @@
 
 - changed release units;
 - release notes;
-- project-local git boundaries.
+- publication gate handoff;
+- project-local git boundaries;
 - текущие git branches для root repo и changed nested release units;
 - `project/releaseContext.md`;
 - `project/gitContext.md`;
 - `project/releaseVersionRegistry.json`;
-- `04-release-notes-handoff.md`;
 - текущий `release-run.md`.
 
 ## Действие
 
 - определить, какие repos должны получить новый git tag;
-- повторно проверить current branch для root repo и changed nested release units;
-- сопоставить его с intended release branch из project-local policy;
+- повторно проверить, что `release-publication gate` уже passed;
 - проверить, что target commit для tag/release является merged HEAD intended release branch;
-- если branch state больше не соответствует readiness handoff, остановить `release-publication gate` и вернуть workflow к PR/merge alignment вместо публикации из feature/non-release branch;
 - прочитать fixed release versions/tags из `project/releaseVersionRegistry.json`;
 - создать tag set для root repo и changed nested repos;
 - подготовить и/или создать GitHub releases по готовым release notes.
@@ -50,12 +46,11 @@
 - список `repo -> release note path`;
 - GitHub release publishing result;
 - обновленный `release-run.md`;
-- финальный handoff artifact для завершения workflow.
+- финальный handoff artifact для завершения happy path workflow.
 
 ## Минимальная проверка внутри шага
 
 - каждый applied tag соответствует changed release unit;
-- каждый changed release unit проверен на current branch;
 - каждый published release сделан из intended release branch, а не из feature branch;
 - каждый published release ссылается на merged HEAD intended release branch;
 - каждый changed release unit имеет release note path;

@@ -17,3 +17,7 @@
 ## `release-publication gate` readiness
 
 - Release notes are ready for publication-stage use after PR/merge alignment is completed.
+
+## Next step
+
+- `05-release-publication-gate`

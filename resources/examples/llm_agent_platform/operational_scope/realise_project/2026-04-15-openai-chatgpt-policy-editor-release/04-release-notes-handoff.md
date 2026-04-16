@@ -18,3 +18,7 @@
 ## `release-publication gate` readiness
 
 - Release notes were ready for publication-stage use after backend/frontend PR merge into `main`.
+
+## Next step
+
+- `05-release-publication-gate`

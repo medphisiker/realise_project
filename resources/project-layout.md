@@ -27,7 +27,9 @@ operational_scope/
       02-docker-cutover-handoff.md
       03-artifact-cleanup-handoff.md
       04-release-notes-handoff.md
-      05-github-release-handoff.md
+      05-release-publication-gate-handoff.md
+      06-github-release-handoff.md
+      mistaken-release-recovery.md  # optional, only for remediation flow
 ```
 
 ## Notes
@@ -36,5 +38,6 @@ operational_scope/
 - `terms.md` внутри workflow-pack хранит workflow-local terminology вроде `release-preparation gate` и `release-publication gate`, если pack использует такие термины.
 - `docs/` хранит SoT и release notes, но не workflow-instance handoffs.
 - `operational_scope/realise_project/` хранит только временные artifacts конкретного release run.
+- `mistaken-release-recovery.md` materialize-ится только если workflow фиксирует remediation flow для ошибочного релиза.
 - Templates в `resources/templates/` уже разложены по этой структуре.
 - Real filled examples лежат в `resources/examples/`.

@@ -3,7 +3,7 @@
 ## Workflow
 
 - Source workflow: `sot_layers/hyper-graph/assets/workflows/realise_project/workflow.md`
-- Current step: `05-github-release`
+- Current step: `06-github-release`
 - Current status: passed
 
 ## Gates and stages
