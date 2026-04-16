@@ -41,16 +41,19 @@ Baseline путь:
 flowchart TD
     S([Workflow started]) --> A[01-readiness-gate\nrelease-preparation gate]
     A -->|passed| B[02-docker-cutover]
-    A -->|blocked| A1[Clarify preparation branch policy]
+    A -->|blocked| U1[/User clarification on preparation branch policy/]
+    U1 --> A
     B --> C[03-artifact-cleanup]
     C --> D[04-release-notes]
     D --> E[05-release-publication-gate\nrelease-publication gate]
-    E -->|passed| F[06-github-release]
+    E -->|passed| U2[/User manual verification confirmed/]
+    U2 --> F[06-github-release]
     E -->|PR or merge alignment required| E1[PR/merge alignment in configured release branch]
     E1 --> E
     F --> G([Workflow completed])
     F -->|mistaken release detected| R[07-mistaken-release-recovery]
-    R --> E1
+    R -->|recovery decision required| U3[/User recovery decision/]
+    U3 --> E1
 ```
 
 ## Таблица вершин
@@ -59,12 +62,15 @@ flowchart TD
 | --- | --- | --- |
 | `Workflow started` | lifecycle marker | Вход в workflow run |
 | `01-readiness-gate` | workflow-step | Проверка readiness и `release-preparation gate` |
+| `User clarification on preparation branch policy` | user interaction | Явное подтверждение/уточнение branch situation перед продолжением workflow |
 | `02-docker-cutover` | workflow-step | Preparation-stage Docker/release contour |
 | `03-artifact-cleanup` | workflow-step | Cleanup completed operational artifacts |
 | `04-release-notes` | workflow-step | Preparation release notes |
 | `05-release-publication-gate` | workflow-step | Explicit publication eligibility decision |
+| `User manual verification confirmed` | user interaction | Human confirmation, что release contour вручную проверен перед publication |
 | `06-github-release` | workflow-step | Final git/GitHub release publication |
 | `07-mistaken-release-recovery` | workflow-step | Exception/remediation path after mistaken release |
+| `User recovery decision` | user interaction | Human decision for remediation path, version reuse/bump or other corrective choice |
 | `Workflow completed` | lifecycle marker | Нормальное завершение happy path |
 
 ## Таблица переходов
@@ -73,16 +79,19 @@ flowchart TD
 | --- | --- | --- |
 | `Workflow started` | `01-readiness-gate` | workflow run started |
 | `01-readiness-gate` | `02-docker-cutover` | `release-preparation gate` passed |
-| `01-readiness-gate` | `Clarify preparation branch policy` | preparation policy blocked |
+| `01-readiness-gate` | `User clarification on preparation branch policy` | preparation policy blocked |
+| `User clarification on preparation branch policy` | `01-readiness-gate` | user clarification received |
 | `02-docker-cutover` | `03-artifact-cleanup` | step completed |
 | `03-artifact-cleanup` | `04-release-notes` | step completed |
 | `04-release-notes` | `05-release-publication-gate` | release-preparation stage completed |
-| `05-release-publication-gate` | `06-github-release` | `release-publication gate` passed |
+| `05-release-publication-gate` | `User manual verification confirmed` | `release-publication gate` passed and human verification required |
+| `User manual verification confirmed` | `06-github-release` | manual verification confirmed |
 | `05-release-publication-gate` | `PR/merge alignment in configured release branch` | publication policy not yet satisfied |
 | `PR/merge alignment in configured release branch` | `05-release-publication-gate` | corrective alignment completed |
 | `06-github-release` | `Workflow completed` | publication succeeded |
 | `06-github-release` | `07-mistaken-release-recovery` | mistaken release detected |
-| `07-mistaken-release-recovery` | `PR/merge alignment in configured release branch` | remediation requires corrective alignment |
+| `07-mistaken-release-recovery` | `User recovery decision` | remediation requires human decision |
+| `User recovery decision` | `PR/merge alignment in configured release branch` | remediation decision taken |
 
 ## Happy path steps
 
