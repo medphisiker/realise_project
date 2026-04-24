@@ -50,7 +50,7 @@
 - каждый удаляемый artifact имеет completed status;
 - каждый удаляемый artifact относится к approved release scope;
 - relevant knowledge для него уже canonized в `docs/`;
-- `operational_scope/tasks_map.md` синхронизирован после cleanup.
+- `operational_scope/task-map.md` синхронизирован после cleanup.
 
 ## DoD
 

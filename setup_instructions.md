@@ -29,7 +29,7 @@ Workflow pack самодостаточен как sequence of steps, но для
 Рекомендуется дополнительно иметь:
 
 - `project/dockerReleaseContext.md`
-- `operational_scope/tasks_map.md`
+- `operational_scope/task-map.md`
 - canonical SoT entry points в `docs/`
 
 ## Как использовать templates

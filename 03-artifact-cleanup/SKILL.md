@@ -16,7 +16,7 @@ version: 1.0.0
 2. Найди completed task artifacts и completed plan artifacts, относящиеся к текущему release scope.
 3. Для каждого artifact проверь, что relevant knowledge уже canonized в `docs/`.
 4. Удали только те artifacts, которые дублируют уже поднятое SoT.
-5. Синхронизируй `operational_scope/tasks_map.md` или project-local task index.
+5. Синхронизируй `operational_scope/task-map.md` или project-local task index.
 
 ## Выход
 

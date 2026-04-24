@@ -125,7 +125,7 @@ Release publish flow для этого проекта:
 
 - Удаляются только completed task artifacts и completed plan artifacts.
 - Cleanup допустим только если соответствующее знание уже canonized в `docs/`.
-- `operational_scope/tasks_map.md` должен быть синхронизирован с удалением artifacts.
+- `operational_scope/task-map.md` должен быть синхронизирован с удалением artifacts.
 - Если artifact все еще нужен как execution/history evidence, его не нужно удалять автоматически без явного project решения.
 
 ## Tagging scope
@@ -143,4 +143,4 @@ Release publish flow для этого проекта:
 - `project/dockerReleaseContext.md`
 - `project/releaseVersionRegistry.json`
 - `docs/index.md`
-- `operational_scope/tasks_map.md`
+- `operational_scope/task-map.md`
